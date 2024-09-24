@@ -15,7 +15,7 @@ on:
 
 env:
   AZURE_RG: RG3
-  AZURE_SUBSCRIPTION: <<Subscription ID>>
+  AZURE_SUBSCRIPTION: '482b7f64-cbbd-4cb0-a5c1-ef3fabf83ce3'
   AZURE-LOCATION: WestEurope
   AZURE-WEBAPP-NAME: paretesteurope-mywebapp
 
