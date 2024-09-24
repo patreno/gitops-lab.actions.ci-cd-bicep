@@ -17,6 +17,7 @@ env:
   AZURE_RG: RG3
   AZURE_SUBSCRIPTION: <<Subscription ID>>
   AZURE-LOCATION: WestEurope
+  AZURE-WEBAPP-NAME: paretesteurope-mywebapp
 
 jobs:
   Build-Job:
@@ -65,3 +66,26 @@ jobs:
       with:
         inlineScript: 
           az group create --name ${{ env.AZURE_RG }} --location ${{ env.AZURE-LOCATION }}
+          
+  WebApp-Job:
+    runs-on: ubuntu-latest
+    needs: [ RG-Job ]
+    steps:
+    - name: Download Templates
+      uses: actions/download-artifact@v3
+      with:
+        name: templates_artifact
+        path: ${{ runner.temp }}/templates
+
+    - name: Download Publish
+      uses: actions/download-artifact@v3
+      with:
+        name: publish_artifact
+        path: ${{ runner.temp }}/publish
+
+    - name: Azure WebApp
+      uses: Azure/webapps-deploy@v2
+      with:
+        app-name: ${{ steps.deploywebapp.outputs.webappname }}
+        # app-name: ${{ env.AZURE-WEBAPP-NAME }}
+        package: ${{ runner.temp }}/publish
